@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <vector>
 #include "magma.h"
+#include <cstring>
 
 class Data {
     std::vector<ull> text_blocks;
@@ -16,10 +17,11 @@ public:
 
     void set_block(ull txt_prmtr, int nmbr) { text_blocks[nmbr] = txt_prmtr; }
 
-    void print_txt() {
-        std::cout << "\nbegin\n";
+    void print_txt(std::string comment = "") {
+        std::cout << "\n" << comment << "\n";
+        std::cout << '\n';
         for (ull& mem : text_blocks) { std::cout << mem << ' '; }
-        std::cout << "\nend\n";
+        std::cout << '\n';
     }
 };
 
@@ -64,13 +66,13 @@ int main(){
     std::vector<ull> text = { 0xfe10dcba98765432, 0xddfa54f88fee0a99, 0x7ff554766fcfdfe };
 
     Data Test(text, text.size());
-    Test.print_txt();
+    Test.print_txt("Text before encryption");
 
     Hook mssg(key, iv);
     Test = mssg.encrypt(Test);
-    Test.print_txt();
+    Test.print_txt("Text after encryption");
 
     Test = mssg.decrypt(Test);
-    Test.print_txt();
+    Test.print_txt("Text after decryption");
     return 0;
 }

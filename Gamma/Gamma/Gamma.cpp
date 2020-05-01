@@ -55,6 +55,6 @@ int main()
 
     Test = mssg.crypt_function(Test);
     Test.print_txt();
-    
+
     return 0;
 }

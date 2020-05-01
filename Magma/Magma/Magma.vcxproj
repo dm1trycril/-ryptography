@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{AB1C170E-CE79-4804-877E-F7A830915785}</ProjectGuid>
+    <ProjectGuid>{479441C9-416C-4DD3-B3DC-E8E7B2E00609}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>secondmagma</RootNamespace>
+    <RootNamespace>Magma</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -147,7 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="second_magma.cpp" />
+    <ClCompile Include="Magma.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

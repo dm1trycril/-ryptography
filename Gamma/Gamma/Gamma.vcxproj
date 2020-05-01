@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{7C156D45-2681-4101-BEFA-940EA8D420DF}</ProjectGuid>
+    <ProjectGuid>{0D681F06-9040-4671-B348-BA33F77D99D2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>secondgamma</RootNamespace>
+    <RootNamespace>Gamma</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -147,7 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="second_gamma.cpp" />
+    <ClCompile Include="Gamma.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="magma.h" />

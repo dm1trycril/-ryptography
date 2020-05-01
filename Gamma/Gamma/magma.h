@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #ifndef MAGMA_H
 #define MAGMA_H
 typedef unsigned long long ull; // 64
@@ -11,10 +11,10 @@ class Key256 {
     ul key_part[8];
 public:
     Key256() {}
-    Key256(ull p1, ull p2, ull p3, ull p4) : whole_key{ p1, p2, p3, p4 } {//при инициализации ключ передается в 4 частях, и разбивается на 8 частей
+    Key256(ull p1, ull p2, ull p3, ull p4) : whole_key{ p1, p2, p3, p4 } {
         for (int i = 0; i < 4; ++i) {
             ull L_part = whole_key[i];
-            ull R_part = whole_key[i] & (0xffffffff); // mod32
+            ull R_part = whole_key[i] & (0xffffffff);
             L_part >>= 32;
             key_part[i * 2] = L_part;
             key_part[i * 2 + 1] = R_part;
@@ -40,26 +40,26 @@ class Magma {
     };
 
     ul replace_by_substitution(ull temp_Rpart, ull temp_round_key, int pi) {
-        temp_Rpart += temp_round_key;//правая часть и раундовый ключ складываются
-        temp_Rpart &= 0xffffffff;//по модулю 32
+        temp_Rpart += temp_round_key;    
+        temp_Rpart &= 0xffffffff;
         int un[8];
-        for (int i = 0; i < 8; ++i) {//разбиваем на 8 частей
-            temp_round_key = temp_Rpart & 0xf;//в х записываем 4 правых(младших) бита
-            un[8 - i - 1] = temp_round_key;//записываем справа налево
-            temp_Rpart >>= 4;//сдвигаем, чтобы можно было применить маску дальше
+        for (int i = 0; i < 8; ++i) {
+            temp_round_key = temp_Rpart & 0xf;
+            un[8 - i - 1] = temp_round_key;
+            temp_Rpart >>= 4;      
         }
-        for (int i = 0; i < 8; ++i) { un[i] = substitution_block[i][un[i]]; }//преобразуем каждое 4битное число в соотвествии с таблицой
-        for (int i = 0; i < 8; ++i) {//восстанавливаем преобразованная правая часть
+        for (int i = 0; i < 8; ++i) { un[i] = substitution_block[i][un[i]]; }   
+        for (int i = 0; i < 8; ++i) {  
             temp_Rpart += un[i];
             if (i < 7) temp_Rpart <<= 4;
         }
-        temp_Rpart = ((temp_Rpart << 11) | (temp_Rpart >> 21)) & (0xffffffff);// делается циклический сдвиг на 11 влево
+        temp_Rpart = ((temp_Rpart << 11) | (temp_Rpart >> 21)) & (0xffffffff);
         return temp_Rpart;
     }
-    ull round(ull& L_part, ull& R_part) {//раунды
+    ull round(ull& L_part, ull& R_part) {
         ull old;
-        for (int i = 0; i < 31; ++i) {//31 преобразование с раундовыми ключами
-            old = R_part;//remember old Rpart value
+        for (int i = 0; i < 31; ++i) {  
+            old = R_part;
             R_part = L_part ^ replace_by_substitution(R_part, round_key[i], i);//xor
             L_part = old;
         }
@@ -77,22 +77,22 @@ public:
         for (int i = 7; i >= 0; --i) { round_key[32 - i - 1] = temp.get_part(i); }
     }
 
-    ull crypt(ull data) {//блок сообщения(64) разбивается на две части (0...0 левая часть), (0...0 правая часть) и шифруется с помощью раундовых ключей
+    ull crypt(ull data) {  
         ull Lpart = data;
         ull Rpart = Lpart & (0xffffffff);
         Lpart >>= 32;
-        data = round(Lpart, Rpart);//шифруем с помощью раундов
+        data = round(Lpart, Rpart); 
         return data;
     }
-   /* ull decrypt(ull data) {//блок сообщения(64) разбивается на две части (0...0 левая часть), (0...0 правая часть) и шифруется с помощью раундовых ключей
-        ull L_part = data;
-        ull R_part = L_part & (0xffffffff);
-        L_part >>= 32;
-        //reverse round keys
-        ul* tmp = round_key;//0...7 7...0 7...0 7...0
-        for (int i = 8; i < 16; ++i) { std::swap(round_key[i], tmp[32 - i - 1]); }
-        data = round(L_part, R_part);//расшифровываем с помощью раундов
-        return data;
-    }*/
+    /* ull decrypt(ull data) {// (64)     (0...0  ), (0...0  )      
+         ull L_part = data;
+         ull R_part = L_part & (0xffffffff);
+         L_part >>= 32;
+         //reverse round keys
+         ul* tmp = round_key;//0...7 7...0 7...0 7...0
+         for (int i = 8; i < 16; ++i) { std::swap(round_key[i], tmp[32 - i - 1]); }
+         data = round(L_part, R_part);//   
+         return data;
+     }*/
 };
 #endif // MAGMA_H
