@@ -1,9 +1,8 @@
 ﻿#include <iostream>
-#include <vector>
 #include "magma.h"
-#include <cstring>
+#include "DataClass.h"
 
-class Data {
+/*class Data {
     std::vector<ull> text_blocks;
     int txt_lenght;
 public:
@@ -23,7 +22,7 @@ public:
         for (ull& mem : text_blocks) { std::cout << mem << ' '; }
         std::cout << '\n';
     }
-};
+};*/
 
 class Hook {
     Key256 key;
