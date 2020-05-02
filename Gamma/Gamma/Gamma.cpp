@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include "magma.h"
+#include "DataClass.h"
 
 
 class Gamma {
