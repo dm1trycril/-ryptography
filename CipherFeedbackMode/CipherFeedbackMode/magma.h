@@ -77,14 +77,14 @@ public:
         for (int i = 7; i >= 0; --i) { round_key[32 - i - 1] = temp.get_part(i); }
     }
 
-    ull encrypt(ull data) {//блок сообщения(64) разбивается на две части (0...0 левая часть), (0...0 правая часть) и шифруется с помощью раундовых ключей
+    ull crypt(ull data) {//блок сообщения(64) разбивается на две части (0...0 левая часть), (0...0 правая часть) и шифруется с помощью раундовых ключей
         ull Lpart = data;
         ull Rpart = Lpart & (0xffffffff);
         Lpart >>= 32;
         data = round(Lpart, Rpart);//шифруем с помощью раундов
         return data;
     }
-    ull decrypt(ull data) {//блок сообщения(64) разбивается на две части (0...0 левая часть), (0...0 правая часть) и шифруется с помощью раундовых ключей
+    /*ull decrypt(ull data) {//блок сообщения(64) разбивается на две части (0...0 левая часть), (0...0 правая часть) и шифруется с помощью раундовых ключей
         ull L_part = data;
         ull R_part = L_part & (0xffffffff);
         L_part >>= 32;
@@ -93,7 +93,7 @@ public:
         for (int i = 8; i < 16; ++i) { std::swap(round_key[i], tmp[32 - i - 1]); }
         data = round(L_part, R_part);//расшифровываем с помощью раундов
         return data;
-    }
+    }*/
 };
 
 void txt_swap(ull& prmtr_1, ull& prmtr_2) {
