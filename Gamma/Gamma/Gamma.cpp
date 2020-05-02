@@ -1,24 +1,6 @@
 ﻿#include <iostream>
-#include <vector>
 #include "magma.h"
 
-class Data {
-    std::vector<ull> txt_blocks;
-    int lenght;
-public:
-    Data(const std::vector<ull>& tmp_txt, int l) : lenght(l) { for (ull mem : tmp_txt) { txt_blocks.push_back(mem); } }
-
-    void xor_block(ull iv, int nmbr) { txt_blocks[nmbr] = txt_blocks[nmbr] ^ iv; }
-
-    void print_txt() {
-        std::cout << "\nbegin\n";
-        for (ull& mem : txt_blocks) { std::cout << mem << ' '; }
-        std::cout << "\nend\n";
-    }
-
-    int getLenght() { return lenght; }
-
-};
 
 class Gamma {
     Key256 key;

@@ -150,6 +150,7 @@
     <ClCompile Include="CipherFeedbackMode.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataClass.h" />
     <ClInclude Include="magma.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
