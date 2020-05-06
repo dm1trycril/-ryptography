@@ -57,11 +57,9 @@ class Magma {
         return temp_Rpart;
     }
     ull round(ull& L_part, ull& R_part) {
-        ull old;
         for (int i = 0; i < 31; ++i) {  
-            old = R_part;
-            R_part = L_part ^ replace_by_substitution(R_part, round_key[i], i);//xor
-            L_part = old;
+            std::swap(R_part, L_part);
+            R_part = R_part ^ replace_by_substitution(L_part, round_key[i], i);
         }
         //last round, 32
         L_part = L_part ^ replace_by_substitution(R_part, round_key[31], 31);

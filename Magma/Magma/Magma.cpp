@@ -56,7 +56,6 @@ class Magma {
         return temp_Rpart;
     }
     ullong round(ullong& Lpart, ullong& Rpart) {//раунды
-        //ullong old;
         for (int i = 0; i < 31; ++i) {//31 преобразование с раундовыми ключами
             std::swap(Rpart, Lpart);
             Rpart = Rpart ^ replace_by_substitution(Lpart, round_key[i], i);

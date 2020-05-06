@@ -1,6 +1,9 @@
 #pragma once
 #ifndef MAGMA_H
 #define MAGMA_H
+
+#include <iostream>
+
 typedef unsigned long long ull; // 64
 typedef unsigned long ul; //32
 
@@ -57,11 +60,9 @@ class Magma {
         return temp_Rpart;
     }
     ull round(ull& L_part, ull& R_part) {//раунды
-        ull old;
         for (int i = 0; i < 31; ++i) {//31 преобразование с раундовыми ключами
-            old = R_part;//remember old Rpart value
-            R_part = L_part ^ replace_by_substitution(R_part, round_key[i], i);//xor
-            L_part = old;
+            std::swap(R_part, L_part);
+            R_part = R_part ^ replace_by_substitution(L_part, round_key[i], i);
         }
         //last round, 32
         L_part = L_part ^ replace_by_substitution(R_part, round_key[31], 31);
