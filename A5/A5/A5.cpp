@@ -29,7 +29,9 @@ class A5 {
     word frame_value;
 public:
 
-    A5(std::vector<byte>& k, word f) : key(k), frame_value(f) {}
+    A5(std::vector<byte>& k, word f) : key(k), frame_value(f) {
+        InitReg();
+    }
 
     void InitReg() {
         R1 = R2 = R3 = 0;
@@ -71,7 +73,7 @@ public:
     bit majority() {
         //int sum;
         int sum = parity(R1 & R1MID) + parity(R2 & R2MID) + parity(R3 & R3MID);
-        sum >= 2 ? 1 : 0;
+        return (sum >= 2 ? 1 : 0);
         /*if (sum >= 2)
             return 1;
         else
@@ -87,6 +89,7 @@ public:
     word syncOne(word reg, word mask, word taps) {
         word temp = reg & taps;
         reg = ((reg << 1) & mask) | parity(temp);
+        return reg;
     }
 
     void syncAll() {
@@ -108,17 +111,53 @@ public:
         }
         for (int i = 0; i < 114; i++) {
             sync();
-            BA[i / 8] |= getbit() << (7 - (i & 7));
+            BA[i / 8] |= getbit() << (7 - (i & 7)); 
         }
     }
 
-    bit encrypt(bit b){
-
+    void crypt(std::vector<byte>& AB, std::vector<byte>& mssg, std::vector<byte>& cipherMssg){
+        for (int i = 0; i < 8; ++i) {
+            cipherMssg[i] = 0;
+        }
+        for (int i = 0; i < 64; ++i) {
+            unsigned long long mssgMask = (mssg[i%8] >> (i%8)) & 1;
+            unsigned long long abMask = (AB[i / 8] >> i) & 1;
+            mssgMask = mssgMask ^ abMask;
+            cipherMssg[i % 8] = cipherMssg[i % 8] | (mssgMask << (i%8));
+        }
     }
 };
+
+void print_message(std::vector<byte>& link) {
+    for (unsigned int(element) : link) {
+        std::cout << element << " ";
+    }
+    std::cout << std::endl;
+}
 
 int main()
 {
     std::cout << std::hex;
+    std::vector<byte> key{ 0x12, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF };
+    std::vector<byte> message{ 0x53, 0x4E, 0xAA, 0x58, 0x2F, 0xE8, 0x15, 0x1A };
+    std::vector<byte> cipherMessage{ 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<byte> AtoB(15), BtoA(15);
+    word frame = 0x134;
+
+    A5 test(key, frame);
+
+    print_message(message);
+
+    test.cipherSequence(AtoB, BtoA);
+
+    test.crypt(AtoB, message, cipherMessage);
+    print_message(cipherMessage);
+
+    test.cipherSequence(AtoB, BtoA);
+
+    test.crypt(AtoB, cipherMessage, message);
+    print_message(message);
+
+
     return 0;
 }
